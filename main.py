@@ -4,6 +4,15 @@ from time_reminder import check_and_send_reminders
 from tasks import add_task, view_table,summarize_tasks,mark_task_completed, delete_task,view_pending_tasks
 from time import sleep
 import log
+import threading
+import time
+
+def start_auto_email_service():
+    while True:
+        print("Remainder service running...")
+        check_and_send_reminders()
+        time.sleep(60)
+
 init_db()
 def menu():
     while True:
@@ -12,8 +21,7 @@ def menu():
         print("2. Manage Tasks")
         print("3. Summarize Appointments and Tasks")
         print("4. View Logs")
-        print("5. Run Auto Email Trigger Service")
-        print("6. Exit")
+        print("5. Exit")
         print("--------------------------------")
         choice = input("Enter your choice: ")
         
@@ -81,15 +89,11 @@ def menu():
                 print(log_entry)
         
         elif choice == '5':
-            print("⏰ Auto Email Trigger Service Started...")
-            while True:
-                check_and_send_reminders()
-                sleep(60)   
-        
-        elif choice == '6':
             print("Program Ended Goodbye:)")
-            break
-
+            break 
+        
+    
 if __name__ == "__main__":
+    reminder_thread = threading.Thread(target=start_auto_email_service, daemon=True)
+    reminder_thread.start()
     menu()
-

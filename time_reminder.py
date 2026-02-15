@@ -34,6 +34,5 @@ def check_and_send_reminders():
             """, (id,))
             conn.commit()
 
-            print(f"✔ Email sent automatically for appointment ID {id}")
 
     conn.close()
